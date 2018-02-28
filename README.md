@@ -4,7 +4,7 @@ Dataset obtained from <a href="https://www.kaggle.com/snap/amazon-fine-food-revi
 
 ### Algorithm used
 * Random Forest
-* SVM
+* SVC
 
 Random Forest produced an accuracy of 82.1%. Working on improving the accuracy.
 
