@@ -60,27 +60,33 @@ from sklearn.ensemble import RandomForestClassifier
 classifier = RandomForestClassifier(n_estimators = 100, criterion = 'gini', 
                                     n_jobs = -1, max_depth=25)
 
+from sklearn.naive_bayes import GaussianNB, MultinomialNB, BernoulliNB
+model2 = MultinomialNB(alpha=0.1)
+model3 = BernoulliNB()
+model4 = GaussianNB()
+
 from sklearn.grid_search import GridSearchCV
 
 param_grid = { 
-    'n_estimators': [100, 200,300,],
-    'max_depth': [10, 25, 50],
-    'max_features': ['auto', 'sqrt', 'log2'],
-    'criterion': ['gini', 'entropy']
+    'alpha': [.001, .01, .1, 1],
 }
-CV_rfc = GridSearchCV(estimator=classifier, param_grid=param_grid)
-CV_rfc.fit(X_train[:1000], y_train[:1000])
-print(CV_rfc.best_params_)
+CV = GridSearchCV(estimator=model2, param_grid=param_grid)
+CV.fit(X_train[:1000], y_train[:1000])
+print(CV.best_params_)
 
 # from sklearn.svm import SVC
 # classifier = SVC(kernel = 'rbf', random_state = 0)
 
 classifier.fit(X_train, y_train)
+model2.fit(X_train, y_train) # 84.97%
+model3.fit(X_train, y_train) # 82%
+model4.fit(X_train, y_train) # 79%
 
 # Predicting the Test set results
 y_pred = classifier.predict(X_test)
+y_pred_nb = model2.predict(X_test)
 
 # Making the Confusion Matrix
 from sklearn.metrics import confusion_matrix, accuracy_score
-cm = confusion_matrix(y_test, y_pred)
-score = accuracy_score(y_test, y_pred)
+cm = confusion_matrix(y_test, y_pred_nb)
+score = accuracy_score(y_test, y_pred_nb)
